@@ -77,6 +77,28 @@ def create_app(test_config=None):
       'success': True,
       'actor': movie.format()
     })
+  @app.route('/movies/<int:id>', methods=['DELETE'])
+  def delete_movie(id):
+    movie = Movie.query.filter_by(id=id).one_or_none()
+    if movie is None:
+      abort(404)
+
+    movie.delete()
+    return jsonify({
+      'success':True,
+      'id':id
+    })
+  @app.route('/actors/<int:id>',methods=['DELETE'])
+  def delete_actor(id):
+    actor = Actor.query.filter_by(id=id).one_or_none()
+    if actor is None:
+      abort(404)
+    
+    actor.delete()
+    return jsonify({
+      'success':True,
+      'id':id
+    })
   
   @app.errorhandler(400)
   def bad_request(error):
