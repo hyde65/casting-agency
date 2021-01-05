@@ -34,7 +34,7 @@ association_table = Table(
 class Movie(db.Model):
     __tablename__ = 'Movie'
 
-    def __init__(self, title, release_date):
+    def __init__(self, title=None, release_date=None):
         self.title = title
         self.release_date = release_date
 
@@ -58,16 +58,18 @@ class Movie(db.Model):
         db.session.delete(self)
         db.session.commit()
     def format(self):
+        actors_id = [actor.id for actor in self.actors]
         return {
             'id':self.id,
             'title':self.title,
-            'release_date':self.release_date
+            'release_date':self.release_date,
+            'actors':actors_id
         }
 
 
 class Actor(db.Model):
     __tablename__ = 'Actor'
-    def __init__(self, name, gender):
+    def __init__(self, name=None, gender=None):
         self.name = name
         self.gender = gender
 
@@ -92,10 +94,12 @@ class Actor(db.Model):
         db.session.commit()
     
     def format(self):
+        movies_id = [ movie.id for movie in self.movies]
         return {
             'id':self.id,
             'name':self.name,
-            'gender':self.gender
+            'gender':self.gender,
+            'movies':movies_id
         }
 
 
