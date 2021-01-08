@@ -88,7 +88,7 @@ def create_app(test_config=None):
       'success':True,
       'id':id
     })
-  @app.route('/actors/<int:id>',methods=['DELETE'])
+  @app.route('/actors/<int:id>', methods=['DELETE'])
   def delete_actor(id):
     actor = Actor.query.filter_by(id=id).one_or_none()
     if actor is None:
@@ -99,6 +99,77 @@ def create_app(test_config=None):
       'success':True,
       'id':id
     })
+
+  def get_actors_by_ids(actors_id_list):
+    actor_list = []
+    for id in actors_id_list:
+      actor = Actor.query.filter_by(id = id).one_or_none()
+      if actor is None:
+        abort(422)
+      actor_list.append(actor)
+    return actor_list
+  
+  @app.route('/movies/<int:id>/update', methods=['PATCH'])
+  def update_movie(id):
+    movie = Movie.query.filter_by(id=id).one_or_none()
+    if movie is None:
+      abort(404)
+    
+    json = request.json
+    title = json.get('title')
+    release_date = json.get('release_date')
+    actors = json.get('actors')
+
+    if title is not None:
+      movie.title = title
+    
+    if release_date is not None:
+      movie.release_date = release_date
+    
+    if actors is not None:
+      movie.actors = get_actors_by_ids(actors) #List
+    
+    movie.update()
+    return jsonify({
+      'success': True,
+      'movie': movie.format()
+    })
+  def get_movies_by_ids(movies_id_list):
+    movie_list = []
+    for id in movies_id_list:
+      movie = Movie.query.filter_by(id = id).one_or_none()
+      if movie is None:
+        abort(422)
+      
+      movie_list.append(movie)
+    return movie_list
+
+  @app.route('/actors/<int:id>/update', methods=['PATCH'])
+  def update_actor(id):
+    actor = Actor.query.filter_by(id = id).one_or_none()
+    if actor is None:
+      abort(404)
+    
+    json = request.json
+    name = json.get('name')
+    gender = json.get('gender')
+    movies = json.get('movies')
+
+    if name is not None:
+      actor.name = name
+
+    if gender is not None:
+      actor.gender = gender
+    
+    if movies is not None:
+      actor.movies = get_movies_by_ids(movies)
+    
+    actor.update()
+    return jsonify({
+      'success':True,
+      'actor': actor.format()
+    })
+
   
   @app.errorhandler(400)
   def bad_request(error):
