@@ -39,38 +39,43 @@ def create_app(test_config=None):
   def create_actor():
     name = request.json.get('name')
     gender = request.json.get('gender')
-    movie_id = request.json.get('movie_id')
+    movies = request.json.get('movies') # id list
 
     actor = Actor(name=name,gender=gender)
-
-    if movie_id is not None:
-      movie = Movie.query.filter_by(id=movie_id).one_or_none()
-      movie_list = []
-      movie_list.append(movie)
-      actor.movies = movie_list
-      
+    movie_list = []
+    # If there aren't movie_id list just add empty list [] to actor.movie
+    if movies is not None:
+      for id in movies:
+        movie = Movie.query.filter_by(id=id).one_or_none()
+        if movie is None:
+          abort(422)
+        movie_list.append(movie)
+    
+    actor.movies = movie_list  
     actor.insert()
 
     return jsonify({
       'success':True,
       'actor':actor.format()
     })
-  
+
   @app.route('/movies', methods=['POST'])
   def create_movie():
     title = request.json.get('title')
     release_date = request.json.get('release_date')
-    actor_id = request.json.get('actor_id')
+    actors = request.json.get('actors')
     
     movie = Movie(title=title,release_date=release_date)
-
-    # Adding actors to movie if there is an actor_id
-    if actor_id is not None:
-      actor = Actor.query.filter_by(id=actor_id).one_or_none()
-      actor_list = []
-      actor_list.append(actor)
-      movie.actors = actor_list
+    actor_list = []
+    # Adding actors to movie if there is sent actors
+    if actors is not None:
+      for id in actors:
+        actor = Actor.query.filter_by(id=id).one_or_none()
+        if actor is None:
+          abort(422)
+        actor_list.append(actor)
     
+    movie.actors = actor_list
     movie.insert()
 
     return jsonify({
