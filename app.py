@@ -1,9 +1,10 @@
 import os
-from flask import Flask, request, abort, jsonify, abort
+from flask import Flask, request, abort, jsonify, abort, render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from sqlalchemy.orm import exc
 from models import setup_db, Movie, Actor
+from auth import AuthError, requires_auth
 
 def create_app(test_config=None):
   # create and configure the app
@@ -13,8 +14,14 @@ def create_app(test_config=None):
   
   @app.route('/')
   def index():
-    return 'Hello world'
+    
+    return render_template('index.html')
+  
+  @app.route('/login')
+  def login():
+    return redirect('https://casting-agency-bo.us.auth0.com/authorize?audience=api&response_type=token&client_id=dHcx5YOFdrqajYeb8Huzc15o35UtP75x&redirect_uri=http://127.0.0.1:5000/')
 
+  @requires_auth('get:actors')
   @app.route('/actors')
   def get_actors():
     actors = Actor.query.all()
@@ -24,7 +31,7 @@ def create_app(test_config=None):
       'success':True,
       'actors': actors_list
     })
-  
+  @requires_auth('get:movies')
   @app.route('/movies')
   def get_movies():
     movies = Movie.query.all()
@@ -34,7 +41,7 @@ def create_app(test_config=None):
       'success':True,
       'movies':movies_list
     })
-  
+  @requires_auth('post:actor')
   @app.route('/actors', methods=['POST'])
   def create_actor():
     name = request.json.get('name')
@@ -58,7 +65,7 @@ def create_app(test_config=None):
       'success':True,
       'actor':actor.format()
     })
-
+  @requires_auth('post:movie')
   @app.route('/movies', methods=['POST'])
   def create_movie():
     title = request.json.get('title')
@@ -82,6 +89,7 @@ def create_app(test_config=None):
       'success': True,
       'actor': movie.format()
     })
+  @requires_auth('delete:movie')
   @app.route('/movies/<int:id>', methods=['DELETE'])
   def delete_movie(id):
     movie = Movie.query.filter_by(id=id).one_or_none()
@@ -93,6 +101,7 @@ def create_app(test_config=None):
       'success':True,
       'id':id
     })
+  @requires_auth('delete:actor')
   @app.route('/actors/<int:id>', methods=['DELETE'])
   def delete_actor(id):
     actor = Actor.query.filter_by(id=id).one_or_none()
@@ -114,6 +123,7 @@ def create_app(test_config=None):
       actor_list.append(actor)
     return actor_list
   
+  @requires_auth('patch:movie')
   @app.route('/movies/<int:id>/update', methods=['PATCH'])
   def update_movie(id):
     movie = Movie.query.filter_by(id=id).one_or_none()
@@ -149,6 +159,7 @@ def create_app(test_config=None):
       movie_list.append(movie)
     return movie_list
 
+  @requires_auth('patch:actor')
   @app.route('/actors/<int:id>/update', methods=['PATCH'])
   def update_actor(id):
     actor = Actor.query.filter_by(id = id).one_or_none()
