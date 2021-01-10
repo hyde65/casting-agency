@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="access_token">
+
+    </div>
+</body>
+</html>
+<script>
+    const queryString = window.location.hash.substr(1).split('&')[0].split('=');
+
+    document.getElementById("access_token").innerHTML = queryString
+    </script>
