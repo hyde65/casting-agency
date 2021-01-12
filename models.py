@@ -8,7 +8,7 @@ import json
 import datetime
 
 
-DATABASE_URL = os.getenv('DATABASE_URL','postgresql://manuel:123456@localhost:5432/casting-agency')
+DATABASE_URL = os.getenv('DATABASE_URL','postgresql://manuel:123456@localhost:5432/test-casting-agency')
 
 db = SQLAlchemy()
 '''
@@ -19,7 +19,7 @@ setup_db(app)
 def setup_db(app,DATABASE_URL=DATABASE_URL):
     app.config['SQLALCHEMY_DATABASE_URI']=DATABASE_URL
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    db.app=app
+    db.app = app
     db.init_app(app)
     
     #db.drop_all()
@@ -62,7 +62,7 @@ class Movie(db.Model):
         return {
             'id':self.id,
             'title':self.title,
-            'release_date':self.release_date,
+            'release_date':self.release_date.strftime("%m-%d-%Y"),
             'actors':actors_id
         }
 

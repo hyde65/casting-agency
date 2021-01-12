@@ -91,7 +91,7 @@ def create_app(test_config=None):
 
     return jsonify({
       'success': True,
-      'actor': movie.format()
+      'movie': movie.format()
     })
   
   @app.route('/movies/<int:id>', methods=['DELETE'])
