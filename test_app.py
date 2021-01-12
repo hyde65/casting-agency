@@ -32,7 +32,7 @@ class CastingAgencyTestCase(unittest.TestCase):
             self.db.create_all()
         
         self.headers = {
-            'authorization': "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ikk1d3FNeFk0TkdWaW1PVEtMS1Z3UyJ9.eyJpc3MiOiJodHRwczovL2Nhc3RpbmctYWdlbmN5LWJvLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDEwNDcxODQ3NDgwMzM4NDI4MDgyMiIsImF1ZCI6WyJhcGkiLCJodHRwczovL2Nhc3RpbmctYWdlbmN5LWJvLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2MTA0NjczMzEsImV4cCI6MTYxMDQ3NDUzMSwiYXpwIjoiZEhjeDVZT0ZkcnFhalllYjhIdXpjMTVvMzVVdFA3NXgiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9yIiwiZGVsZXRlOm1vdmllIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvciIsInBhdGNoOm1vdmllIiwicG9zdDphY3RvciIsInBvc3Q6bW92aWUiXX0.cuntYR_QZkoopMrt3gTV5Scvcc54OQzQxCkktP7kF7-qazM_3-y9zKjQT6UBdPCwX-7TiMFFfnJOXqra575tvLKbsJcWKwGO9N3ksokdbYoYec0V4j0HTXkyvO2OqAmnYX3TK48YVNWq3eM2buThSao8TZPeLdUGLM1e9x_XTBjwO3kLqO-TTvuHAbD4lM5aaYxVH1p1PC6gjPJAe3N1wrgaiYIkl6qMGN1u9QiBrmPB4F5_uKz9p7U99T3wE2tlQsay5UCxqNeP3_dN3Nrr116PuyEPmqfm5eHciVkSDdo-vjeOGYA3-I_r8_Z8YmciYhnFTuwKt431Y9t5wTTM1A"
+            'authorization': "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ikk1d3FNeFk0TkdWaW1PVEtMS1Z3UyJ9.eyJpc3MiOiJodHRwczovL2Nhc3RpbmctYWdlbmN5LWJvLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDEwNDcxODQ3NDgwMzM4NDI4MDgyMiIsImF1ZCI6WyJhcGkiLCJodHRwczovL2Nhc3RpbmctYWdlbmN5LWJvLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2MTA0NjgyMzAsImV4cCI6MTYxMDU1NDYzMCwiYXpwIjoiZEhjeDVZT0ZkcnFhalllYjhIdXpjMTVvMzVVdFA3NXgiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9yIiwiZGVsZXRlOm1vdmllIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvciIsInBhdGNoOm1vdmllIiwicG9zdDphY3RvciIsInBvc3Q6bW92aWUiXX0.udz6DpzgYwVX6BQTbxqyE7vrctL3W05LnMGLFEhSGY1UwqyigqGtN94UXMqh2VQ_2WnzuY-16ricybowC2vV99yspILoY_glPZffzC9EvHCv7fGESj2JaRuds4NzfhCdR9fVO-bJQAn_ZdmfQQmLk4ybSZcWNWmRin8IS4SAoSMusqTdV6Nt1QDC2_99GkRoEt3g-0PUcJYM7tmUccUrYJ0vWtPCs2f5HBglCyrfA5VXaUdzxEasRejobPo87LAWGoTVepEwnl4HtTBbUJQ5UQEybbIJsj6oS9uwqoAccIYFox3G7498gSFpT4DBuWfLfXyi-jOL9gZfnTnTBNuwSg"
         }
 
         self.new_actor = {
@@ -136,7 +136,6 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(data['movie'].get('title'), self.update_movie.get('title')) # Checking if the title is changed
-
         self.assertEqual(data['movie'].get('release_date'), self.update_movie.get('release_date')) # Checking if the release_date is changed
 
 
