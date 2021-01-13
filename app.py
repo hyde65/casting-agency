@@ -11,6 +11,8 @@ def create_app(test_config=None):
   app = Flask(__name__)
   setup_db(app)
   CORS(app)
+
+  
   
   @app.route('/')
   def index():
@@ -26,10 +28,7 @@ def create_app(test_config=None):
   @requires_auth('get:actors')
   def get_actors(jwt):
     actors = Actor.query.all()
-    
-    # if len(actors) == 0:
-    #   abort(404)
-
+  
     actors_list = [actor.format() for actor in actors]
     return jsonify({
       'success':True,
@@ -40,9 +39,6 @@ def create_app(test_config=None):
   @requires_auth('get:movies')
   def get_movies(jwt):
     movies = Movie.query.all()
-
-    # if len(movies) == 0:
-    #   abort(404)
 
     movies_list = [movie.format() for movie in movies] 
     return jsonify({
@@ -253,6 +249,12 @@ def create_app(test_config=None):
           'error': 500,
           'message': 'internal server error'
       }), 500
+      
+  @app.errorhandler(AuthError)
+  def handle_auth_error(ex):
+      response = jsonify(ex.error)
+      response.status_code = ex.status_code
+      return response
   return app
 
 app = create_app()
