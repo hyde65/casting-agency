@@ -8,7 +8,9 @@ import json
 import datetime
 
 
-DATABASE_URL = os.getenv('DATABASE_URL','postgresql://manuel:123456@localhost:5432/test-casting-agency')
+DATABASE_URL = os.getenv(
+    'DATABASE_URL',
+    'postgresql://manuel:123456@localhost:5432/test-casting-agency')
 
 db = SQLAlchemy()
 '''
@@ -16,20 +18,23 @@ setup_db(app)
     binds a flask application and a SQLAlchemy service
 '''
 
-def setup_db(app,DATABASE_URL=DATABASE_URL):
-    app.config['SQLALCHEMY_DATABASE_URI']=DATABASE_URL
+
+def setup_db(app, DATABASE_URL=DATABASE_URL):
+    app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
-    
-    #db.drop_all()
-    #db.create_all()
+
+    # db.drop_all()
+    # db.create_all()
+
 
 association_table = Table(
-    'Movie_Actor',db.Model.metadata,
+    'Movie_Actor', db.Model.metadata,
     Column('Movie_id', Integer, ForeignKey('Movie.id')),
     Column('Actor_id', Integer, ForeignKey('Actor.id'))
 )
+
 
 class Movie(db.Model):
     __tablename__ = 'Movie'
@@ -41,12 +46,13 @@ class Movie(db.Model):
     id = Column(Integer, primary_key=True)
     title = Column(String)
     release_date = Column(db.DateTime())
-    
+
     actors = relationship(
         'Actor',
         secondary=association_table,
         back_populates='movies'
     )
+
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -57,18 +63,20 @@ class Movie(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
     def format(self):
         actors_id = [actor.id for actor in self.actors]
         return {
-            'id':self.id,
-            'title':self.title,
-            'release_date':self.release_date.strftime("%m-%d-%Y"),
-            'actors':actors_id
+            'id': self.id,
+            'title': self.title,
+            'release_date': self.release_date.strftime("%m-%d-%Y"),
+            'actors': actors_id
         }
 
 
 class Actor(db.Model):
     __tablename__ = 'Actor'
+
     def __init__(self, name=None, gender=None):
         self.name = name
         self.gender = gender
@@ -82,6 +90,7 @@ class Actor(db.Model):
         secondary=association_table,
         back_populates='actors'
     )
+
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -92,15 +101,12 @@ class Actor(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
-    
+
     def format(self):
-        movies_id = [ movie.id for movie in self.movies]
+        movies_id = [movie.id for movie in self.movies]
         return {
-            'id':self.id,
-            'name':self.name,
-            'gender':self.gender,
-            'movies':movies_id
+            'id': self.id,
+            'name': self.name,
+            'gender': self.gender,
+            'movies': movies_id
         }
-
-
-

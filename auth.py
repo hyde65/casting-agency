@@ -8,8 +8,8 @@ from urllib.request import urlopen
 import logging
 
 AUTH0_DOMAIN = 'casting-agency-bo.us.auth0.com'
-ALGORITHMS = os.getenv('ALGORITHMS',['RS256']) 
-API_AUDIENCE = os.getenv('API_AUDIENCE','api')
+ALGORITHMS = os.getenv('ALGORITHMS', ['RS256'])
+API_AUDIENCE = os.getenv('API_AUDIENCE', 'api')
 
 # AuthError Exception
 '''
@@ -64,6 +64,7 @@ def get_token_auth_header():
     token = parts[1]
     return token
 
+
 def verify_decode_jwt(token):
     """ Verify the jwt and decode it with JSON Web Key Sets
         'https://coffeeshopbo.us.auth0.com/.well-known/jwks.json'
@@ -72,7 +73,7 @@ def verify_decode_jwt(token):
     Raises:
         AuthError: If the auhotization is malformed
         AuthError: If the token is expired
-        AuthError: if have incorrect claims 
+        AuthError: if have incorrect claims
         AuthError: Can't authenticate token
         AuthError: The key provided is erroneous
     Returns:
@@ -130,11 +131,12 @@ def verify_decode_jwt(token):
                 'code': 'invalid_header',
                 'description': 'Unable to parse authentication token.'
             }, 401)
-            
+
     raise AuthError({
-                'code': 'invalid_header',
+        'code': 'invalid_header',
                 'description': 'Unable to find the appropriate key.'
-            }, 400)
+    }, 400)
+
 
 def check_permissions(permission, payload):
     """Check if the api permission is in the payload of the user
@@ -161,18 +163,17 @@ def check_permissions(permission, payload):
     return True
 
 
-
 def requires_auth(permission=''):
-    """This is a decorator used with all the apis that need to check the authentification
-    and permissions of the api.
-    Utilize all the functions written above to verify, authentificate jwt, and check 
-    its permissions.
+    """This is a decorator used with all the apis that need to check the
+    authentification and permissions of the api.
+    Utilize all the functions written above to verify, authentificate jwt,
+    and check its permissions.
     Args:
-        permission (str, optional): The permission of the api, for example 'patch:drinks'. Defaults to ''.
+        permission (str, optional): The permission of the api, for example
+        'patch:drinks'. Defaults to ''.
     """
     def requires_auth_decorator(f):
         @wraps(f)
-        
         def wrapper(*args, **kwargs):
             token = get_token_auth_header()
             try:
