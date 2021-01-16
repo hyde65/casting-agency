@@ -7,7 +7,8 @@ from flask_migrate import Migrate
 import json
 import datetime
 
-
+# Database url variable to connect to heroku database. 
+# Default variable value: localhost database
 DATABASE_URL = os.getenv(
     'DATABASE_URL',
     'postgresql://manuel:123456@localhost:5432/test-casting-agency')
@@ -29,6 +30,9 @@ def setup_db(app, DATABASE_URL=DATABASE_URL):
     # db.create_all()
 
 
+# Assosiation table between Movie and Actor.
+# One actor can act in many movies.
+# One Movie can have many actors.
 association_table = Table(
     'Movie_Actor', db.Model.metadata,
     Column('Movie_id', Integer, ForeignKey('Movie.id')),
@@ -53,6 +57,7 @@ class Movie(db.Model):
         back_populates='movies'
     )
 
+    # Helper methods
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -91,6 +96,7 @@ class Actor(db.Model):
         back_populates='actors'
     )
 
+    # Helper Methods
     def insert(self):
         db.session.add(self)
         db.session.commit()
