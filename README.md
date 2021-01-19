@@ -1,6 +1,6 @@
 # CASTING-AGENCY
 
-This backend was done to improve casting agencies, providing apis rest to save data of the movies and actors, utilizing python for backend.
+This backend was done to improve casting agencies, providing apis rest to store data of the movies and actors, utilizing python for backend and auth0 for authentification.
 
 ## Getting Started
 
@@ -10,7 +10,7 @@ This backend was done to improve casting agencies, providing apis rest to save d
 
 Follow instructions to install the latest version of python for your platform in the [python docs](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python)
 
-You also can utilize Pyenv to install 3.7.0 easily.
+You also can utilize Pyenv to install python 3.7.0 easily.
 [pyenv installer](https://github.com/pyenv/pyenv-installer)
 
 #### Virtual Enviroment
@@ -26,19 +26,20 @@ Once you have your virtual environment setup and running, install dependencies b
 pip install -r requirements.txt
 ```
 
-This will install all of the required packages we selected within the `requirements.txt` file.
+This will install all of the required packages within the `requirements.txt` file.
 
 ##### Key Dependencies
 
 - [Flask](http://flask.pocoo.org/)  is a lightweight backend microservices framework. Flask is required to handle requests and responses.
 
-- [SQLAlchemy](https://www.sqlalchemy.org/) is the Python SQL toolkit and ORM we'll use handle the lightweight sqlite database.
+- [SQLAlchemy](https://www.sqlalchemy.org/) is the Python SQL toolkit and ORM used for postgresql.
 
 ## Database setup
 This project utilized postgresql 13.1.
 To install you can go to [postgresql download](https://www.postgresql.org/download/)
 
-With Postgres running, restore a database using the trivia.psql file provided. From the backend folder in terminal run:
+With Postgres running, restore a database using the casting-agency.pgsql file provided. 
+From the backend folder in terminal run:
 ```bash
 psql casting-agency < casting-agency.pgsql
 ```
@@ -50,20 +51,21 @@ From the source code directory first ensure you're working using your created vi
 
 To run the server, execute:
 ```bash
-python manage runserver -r
+python manage.py runserver -r
 ```
 
-## API REFERENCE
-Error Handling
-Errors are returned as JSON objects in the following format.
+## API Documentation
 
+### Error Handling
+Errors are returned as JSON objects in the following format.
+```JSON
 {
-    "success": False,
+    "success": false,
     "error": 400,
     "message": "bad request"
 }
-
-The API will return three error types when request fail:
+```
+The API will return the next error types when request fail:
 - 400: Bad Request
 - 401: Unauthorized
 - 403: Forbidden
@@ -73,20 +75,21 @@ The API will return three error types when request fail:
 - 500: Internal server error
 
 ### ENDPOINTS
-GET '/actors'
-GET '/movies'
-POST '/actors'
-POST'/movies'
-DELETE '/actors/\<int:id>'
-DELETE '/movies/<int:id>'
-PATCH '/actors/<int:id>/update'
-PATCH '/movies/<int:id>/update'
+- GET '/actors'
+- GET '/movies'
+- POST '/actors'
+- POST'/movies'
+- DELETE '/actors/\<int:id>'
+- DELETE '/movies/\<int:id>'
+- PATCH '/actors/\<int:id>/update'
+- PATCH '/movies/\<int:id>/update'
 
 #### GET '/actors'
-- Fetches a dictionary with actors and a success value, utilizing a bearer token.
+- Fetches a dictionary with actors and a success value, utilizing a bearer token for authentication.
 - Request Arguments: Header authorization bearer token.
 
 Example:
+
 GET 'localhost:5000/actors'
 headers
 ```JSON
@@ -98,10 +101,10 @@ headers
 - Returns: a json with the next keys:
     - success: True.
     - actors: a list of actors that have the next keys.
-        - id: The identificator
-        - name: The name of the actor
-        - gender: The gender of the actor
-        - movies: The movies where acted the actor.
+        - id: (int) The identificator
+        - name: (string) The name of the actor
+        - gender: (string)The gender of the actor
+        - movies: (array) The movies where acted the actor.
 
 Example: 
 
@@ -127,27 +130,28 @@ Example:
     ],
     "success": true
 }
-```
 
+```
 #### GET '/movies'
-- Fetches a dictionary with movies and a success value, utilizing a bearer token.
+- Fetches a dictionary with movies and a success value, utilizing a bearer token for authentication.
 - Request Arguments: Header authorization bearer token.
 
 Example:
+
 GET 'localhost:5000/movies'
 headers
 ```JSON
 {
-    "authorization":"Bearer <Token>"
+    "authorization": "Bearer <Token>"
 }
 ```
 - Returns: a json with the next keys:
     - success: True.
     - movies: a list of actors that have the next keys.
-        - id: /<int>The identificator
-        - title: The title of the movie
-        - release_date: The release date of the movie
-        - actors: The actors who acted in the movie.
+        - id: (int) The identificator.
+        - title: (string) The title of the movie.
+        - release_date:(string) The release date of the movie in the following format "mm-dd-yyyy"
+        - actors: (array) The actors who acted in the movie.
 
 Example: 
 
@@ -175,17 +179,19 @@ Example:
     ],
     "success": true
 }
-
 ```
+
 #### POST '/actors'
-- Create an actor through json request. 
+- Create an actor through json request and bearer token for authentication. 
 - Request Arguments: 
     - Header authorization bearer token.
-    - JSON Request
-        - name: The name of the actor
-        - gender: The gender of the actor
-        - movies: The id of the movies where acted the actor, This movies must exist, otherwise you will raise an 422 error.
+    - JSON Request. If you add None valuesto name or gender, you will raise a 400 error
+        - name: (string) The name of the actor.
+        - gender: (string) The gender of the actor.
+        - movies: (array) The id of the movies where acted the actor, This movies must exist, otherwise you will raise an 422 error.
+
 Example:
+
 POST 'localhost:5000/movies'
 headers
 ```JSON
@@ -202,7 +208,7 @@ Request json
 ```
 - Returns: a json with the next keys:
     - success: True.
-    - created: The id of the movie created.
+    - created: (int) The id of the movie created.
 
 Example: 
 
@@ -217,11 +223,13 @@ Example:
 - Create a movie through a json request, and a bearer token.
 - Request Arguments: 
     - Header authorization bearer token.
-    - Json request with the followin keys
-        - title: the title of the movie.
-        - release_date: the release_date of the movie.
-        - actors: the actors of the movie, this actors have to exist or will raise an 422 error.
+    - Json request with the followin keys. If you add None values to title or release date you will raise a 400 error
+        - title: (string) The title of the movie.
+        - release_date: (string) The release_date of the movie, with the following format 'mm-dd-yyy'.
+        - actors: (array) The actors of the movie, this actors have to exist or will raise an 422 error.
+
 Example
+
 POST 'localhost:5000/movies'
 
 headers
@@ -244,12 +252,13 @@ Example
 ```
 
 #### DELETE '/actors/\<int:id>'
-- Delete an actor utilizing a bearer token and path parameter
+- Delete an actor utilizing a bearer token and the id of the actor through path parameter
 - Request Arguments:
     - Header authorization bearer token.
     - Path parameter utilizing the id.
 
 Example:
+
 DELETE '/actors/3'
 
 header
@@ -260,8 +269,9 @@ header
 ```
 - Returns: a json with the next keys:
     - success: True.
-    - deleted: The id of the actor deleted.
+    - deleted: (int) The id of the actor deleted.
 
+Example
 ```JSON
 {
     "id": 3,
@@ -270,25 +280,27 @@ header
 
 ```
 
-#### DELETE '/movies/<int:id>'
-- Delete a movie through a bearer token and path parameter
+#### DELETE '/movies/\<int:id>'
+- Delete a movie through a bearer token and the id of the movie through path parameter
 - Request Arguments:
     - Header authorization bearer token.
     - Path parameter utilizing the id.
 
 Example:
+
 DELETE 'localhost:5000/movies/3'
 
 header
 ```JSON
 {
-    "authorization":"Bearer <Token>"
+    "authorization": "Bearer <Token>"
 }
 ```
 - Returns: a json with the next keys:
     - success: True.
-    - deleted: The id of the actor deleted.
+    - deleted: (int) The id of the actor deleted.
 
+Example
 ```JSON
 {
     "deleted": 3,
@@ -296,16 +308,18 @@ header
 }
 ```
 
-#### PATCH '/actors/<int:id>/update'
-- Update an actor with a json request data, authorization bearer token and path parameter.
+#### PATCH '/actors/\<int:id>/update'
+- Update an actor with a json request data, authorization bearer token and the id through path parameter.
 - Request Arguments:
     - Header authorization bearer token.
     - Path parameter utilizing the id of the actor to be updated.
-    - A json request with the following keys
-        - name: The name of the actor
-        - gender: The gender of the actor
-        - movies: The movies where acted the actor, This movies must exist or will raise an 422 error.
+    - A json request with one or more of the following keys
+        - name: (string) The name of the actor
+        - gender: (string) The gender of the actor
+        - movies: (array) The movies where acted the actor, This movies must exist or will raise an 422 error.
+
 Example
+
 PATCH 'localhost:5000/actors/1/update'
 
 Header
@@ -324,10 +338,11 @@ Request Json
 - Returns: a json with the next keys:
     - success: True.
     - actor: The actor updated with the next keys.
-        - id: The identificator
-        - name: The name of the actor
-        - gender: The gender of the actor
-        - movies: The movies where acted the actor.
+        - id: (int) The identificator
+        - name: (string) The name of the actor
+        - gender: (string) The gender of the actor
+        - movies: (array) The movies where acted the actor.
+
 Example 
 ```JSON
 {
@@ -341,15 +356,17 @@ Example
 ```
 
 #### PATCH '/movies/<int:id>/update'
-- Update a movie with the data to be changed through a json request data, authorization bearer token and path parameter.
+- Update a movie with the data to be changed through a json request data, authorization bearer token and the id through the path parameter.
 - Request Arguments:
     - Header authorization bearer token.
-    - Path parameter utilizing the id of the movie to be updated..
-    - A json request with the following keys
-        - title: the title of the movie.
-        - release_date: the release_date of the movie.
-        - actors: the actors of the movie, this actors have to exist or will raise an 422 error.
+    - Path parameter utilizing the id of the movie to be updated.
+    - A json request with one or more of the following keys
+        - title: (string) the title of the movie.
+        - release_date: (string )the release_date of the movie, with the following format 'mm-dd-yyyy'.
+        - actors: (array)the actors of the movie, this actors have to exist or will raise an 422 error.
+
 Example
+
 PATCH 'localhost:5000/movies/1/update'
 
 Header
@@ -370,11 +387,12 @@ JSON Request
 ```
 - Return a json with the following keys
     - success: True
-    - movie with the following keys
-        - id: The id of the movie
-        - title: The title of the movie
-        - release_date: The release date of the movie
-        - actors: The actors who acted in the movie.
+    - movie: the movie updated with the following keys
+        - id: (int) The id of the movie
+        - title: (string) The title of the movie
+        - release_date: (string) The release date of the movie in the following format 'mm-dd-yyyy'
+        - actors: (arrays) The actors who acted in the movie.
+
 Example
 ```JSON
 {
