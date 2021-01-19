@@ -22,7 +22,6 @@ def create_app(test_config=None):
     setup_db(app)
     CORS(app)
 
-    
     @app.route('/')
     def index():
         return render_template('index.html')
@@ -88,7 +87,7 @@ def create_app(test_config=None):
 
             return jsonify({
                 'success': True,
-                'actor': actor.id
+                'created': actor.id
             })
         except:
             abort(422)  # Unprocesable entity
@@ -120,7 +119,7 @@ def create_app(test_config=None):
 
             return jsonify({
                 'success': True,
-                'movie': movie.id
+                'created': movie.id
             })
         except:
             abort(422)
@@ -136,7 +135,7 @@ def create_app(test_config=None):
         movie.delete()
         return jsonify({
             'success': True,
-            'id': id
+            'deleted': id
         })
 
     @app.route('/actors/<int:id>', methods=['DELETE'])
@@ -150,7 +149,7 @@ def create_app(test_config=None):
         actor.delete()
         return jsonify({
             'success': True,
-            'id': id
+            'deleted': id
         })
 
     def get_actors_by_ids(actors_id_list):
@@ -199,6 +198,7 @@ def create_app(test_config=None):
         except:
             abort(422)
     # function to get movies with a list of ids
+
     def get_movies_by_ids(movies_id_list):
         movie_list = []
         # Go through list of ids and get the movie with the id and add it.
@@ -215,7 +215,7 @@ def create_app(test_config=None):
         # If there is not actor to be updated, abort().
         if actor is None:
             abort(404)
-        
+
         # Getting the atributes data to update the actor.
         json = request.json
         name = json.get('name')
@@ -249,7 +249,7 @@ def create_app(test_config=None):
         return jsonify({
             'success': False,
             'error': 400,
-            'message': 'bad request'  # Syntaxi error
+            'message': 'bad request'  # Syntaxis error
         }), 400
 
     @app.errorhandler(404)
