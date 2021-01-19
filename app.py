@@ -1,5 +1,5 @@
 import os
-from flask import {
+from flask import (
     Flask,
     request,
     abort,
@@ -7,7 +7,7 @@ from flask import {
     abort,
     render_template,
     redirect
-}
+)
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from sqlalchemy.orm import exc
@@ -22,11 +22,13 @@ def create_app(test_config=None):
     setup_db(app)
     CORS(app)
 
+    
     @app.route('/')
     def index():
         return render_template('index.html')
 
     # TODO: remove this api login, or order the url using variables.
+    # Also remove templates.
     @app.route('/login')
     def login():
         return redirect('https://casting-agency-bo.us.auth0.com/authorize?audience=api&response_type=token&client_id=dHcx5YOFdrqajYeb8Huzc15o35UtP75x&redirect_uri=http://127.0.0.1:5000/')
@@ -86,7 +88,7 @@ def create_app(test_config=None):
 
             return jsonify({
                 'success': True,
-                'actor': actor.format()
+                'actor': actor.id
             })
         except:
             abort(422)  # Unprocesable entity
@@ -118,7 +120,7 @@ def create_app(test_config=None):
 
             return jsonify({
                 'success': True,
-                'movie': movie.format()
+                'movie': movie.id
             })
         except:
             abort(422)
