@@ -16,25 +16,25 @@ from auth import AuthError, requires_auth
 
 
 def create_app(test_config=None):
-    # AUTH0_DOMAIN = str(os.getenv('AUTH0_DOMAIN')) 
-    # API_AUDIENCE = str(os.getenv('API_AUDIENCE'))
-    # CLIENT_ID = str(os.getenv('CLIENT_ID')) 
-    # REDIRECT_URI = str(os.getenv('REDIRECT_URI'))
+    AUTH0_DOMAIN = str(os.getenv('AUTH0_DOMAIN')) 
+    API_AUDIENCE = str(os.getenv('API_AUDIENCE'))
+    CLIENT_ID = str(os.getenv('CLIENT_ID')) 
+    REDIRECT_URI = str(os.getenv('REDIRECT_URI'))
 
     # Create and configure the app
     app = Flask(__name__)
     setup_db(app)
     CORS(app)
 
-    # # The to get the jwt easily and copy it.
-    # @app.route('/')
-    # def index():
-    #     return render_template('index.html')
+    # The to get the jwt easily and copy it.
+    @app.route('/')
+    def index():
+        return render_template('index.html')
 
-    # # Used to login and get the JWT token
-    # @app.route('/login')
-    # def login():
-    #     return redirect('https://'+AUTH0_DOMAIN+'/authorize?audience='+API_AUDIENCE+'&response_type=token&client_id='+CLIENT_ID+'&redirect_uri='+REDIRECT_URI)
+    # Used to login and get the JWT token
+    @app.route('/login')
+    def login():
+        return redirect('https://'+AUTH0_DOMAIN+'/authorize?audience='+API_AUDIENCE+'&response_type=token&client_id='+CLIENT_ID+'&redirect_uri='+REDIRECT_URI)
 
     @app.route('/actors')
     @requires_auth('get:actors')

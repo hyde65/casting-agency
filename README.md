@@ -75,10 +75,13 @@ From the source code directory first ensure you're working using your created vi
 
 To run the server, execute:
 ```bash
-source setup.sh # You can modify the DATABAS_URL for the conection
+# To setup the config variables, also you can modify the DATABASE_URL
+source setup.sh
 python manage.py runserver -r
 ```
 ## Hosted in Heroku
+You also can do test in Heroku with the next url
+url: https://casting-agency-bo.herokuapp.com/
 
 
 ## Testing
@@ -99,9 +102,10 @@ export TOKEN_EXECUTIVE_DIRECTOR=<Token Executive Director>
 
 Then you can run
 ```BASH
+bash executetest.sh
 ```
 
-or manual
+or you also do same with
 ```BASH
 dropdb test-casting-agency # If you don't have a db you'll recieve an error.
 createdb test-casting-agency

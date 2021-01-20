@@ -97,7 +97,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTrue(data['movie'])
+        self.assertTrue(data['created'])
 
     def test_post_actor(self):
         res = self.client.post(
@@ -107,7 +107,7 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTrue(data['actor'])
+        self.assertTrue(data['created'])
 
     def test_delete_movie(self):
         id = 3  # Deleting movie "Your Name"
@@ -119,7 +119,7 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['id'], id)
+        self.assertEqual(data['deleted'], id)
         self.assertIsNone(movie)
 
     def test_delete_actor(self):
@@ -132,7 +132,7 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['id'], id)
+        self.assertEqual(data['deleted'], id)
         self.assertIsNone(movie)
 
     def test_patch_actor(self):
@@ -356,7 +356,7 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTrue(data['actor'])
+        self.assertTrue(data['created'])
 
     def test_casting_director_patch_movie(self):
         id = 2
