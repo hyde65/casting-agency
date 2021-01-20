@@ -11,7 +11,7 @@ import datetime
 # Default variable value: localhost database
 DATABASE_URL = os.getenv(
     'DATABASE_URL',
-    'postgresql://manuel:123456@localhost:5432/test-casting-agency')
+    'postgresql://manuel:123456@localhost:5432/casting-agency')
 
 db = SQLAlchemy()
 '''

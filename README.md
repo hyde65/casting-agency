@@ -41,6 +41,7 @@ To install you can go to [postgresql download](https://www.postgresql.org/downlo
 With Postgres running, restore a database using the casting-agency.pgsql file provided. 
 From the backend folder in terminal run:
 ```bash
+createdb casting-agency
 psql casting-agency < casting-agency.pgsql
 ```
 
