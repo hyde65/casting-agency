@@ -30,7 +30,7 @@ def create_app(test_config=None):
     # Also remove templates.
     @app.route('/login')
     def login():
-        return redirect('https://casting-agency-bo.us.auth0.com/authorize?audience=api&response_type=token&client_id=dHcx5YOFdrqajYeb8Huzc15o35UtP75x&redirect_uri=http://127.0.0.1:5000/')
+        return redirect('https://casting-agency-bo.us.auth0.com/authorize?audience=api&response_type=token&client_id=dHcx5YOFdrqajYeb8Huzc15o35UtP75x&redirect_uri=https://casting-agency-bo.herokuapp.com/')
 
     @app.route('/actors')
     @requires_auth('get:actors')

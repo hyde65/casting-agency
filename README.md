@@ -55,6 +55,18 @@ To run the server, execute:
 python manage.py runserver -r
 ```
 
+## Testing
+To test the code you will need:
+- JWT token of the next roles:
+    - Casting Assistant
+    - Casting Director
+    - Executive Producer
+- A database created for testing purposes.
+
+You will need to run in the terminal
+```BASH
+export 
+```
 ## API Documentation
 
 ### Error Handling

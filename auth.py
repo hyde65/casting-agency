@@ -7,9 +7,9 @@ from socket import timeout
 from urllib.request import urlopen
 import logging
 
-AUTH0_DOMAIN = 'casting-agency-bo.us.auth0.com'
-ALGORITHMS = os.getenv('ALGORITHMS', ['RS256'])
-API_AUDIENCE = os.getenv('API_AUDIENCE', 'api')
+AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN')
+ALGORITHMS = os.getenv('ALGORITHMS')
+API_AUDIENCE = os.getenv('API_AUDIENCE')
 
 # AuthError Exception
 '''

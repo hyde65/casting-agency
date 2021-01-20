@@ -13,7 +13,8 @@ class CastingAgencyTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app()
         self.client = self.app.test_client()
-
+        
+        # You can change the variables to your desired database
         self.DB_HOST = os.getenv('DB_HOST', 'localhost:5432')
         self.DB_USER = os.getenv('DB_USER', 'manuel')
         self.DB_PASSWORD = os.getenv('DB_PASSWORD', '123456')

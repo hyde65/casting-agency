@@ -10,8 +10,7 @@ import datetime
 # Database url variable to connect to heroku database. 
 # Default variable value: localhost database
 DATABASE_URL = os.getenv(
-    'DATABASE_URL',
-    'postgresql://manuel:123456@localhost:5432/casting-agency')
+    'DATABASE_URL')
 
 db = SQLAlchemy()
 '''
@@ -25,10 +24,6 @@ def setup_db(app, DATABASE_URL=DATABASE_URL):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
-
-    # db.drop_all()
-    # db.create_all()
-
 
 # Assosiation table between Movie and Actor.
 # One actor can act in many movies.
