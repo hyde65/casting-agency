@@ -3,16 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Access Token</title>
 </head>
 <body>
-    <div id="access_token">
-
-    </div>
+    <div>
+        <p>Access token</p>
+        <textarea id="access_token" cols="30" rows="10"></textarea>
+    </div> 
+    <button onclick='copy()'>Copy Token</button>
 </body>
 </html>
 <script>
     const queryString = window.location.hash.substr(1).split('&')[0].split('=');
+    console.log(queryString[1])
+    document.getElementById("access_token").innerHTML = queryString[1];
 
-    document.getElementById("access_token").innerHTML = queryString
+   function copy() {
+       let textArea = document.getElementById("access_token");
+       textArea.select();
+       document.execCommand("copy");
+   }
     </script>

@@ -1,6 +1,6 @@
 # CASTING-AGENCY
 
-This backend was done to improve casting agencies, providing apis rest to store data of the movies and actors, utilizing python for backend and auth0 for authentification.
+This backend was done to improve casting agencies, providing rest apis to store data of movies and actors, utilizing python and flask for backend and auth0 for authentification.
 
 ## Getting Started
 
@@ -15,7 +15,8 @@ You also can utilize Pyenv to install python 3.7.0 easily.
 
 #### Virtual Enviroment
 
-I recommend working within a virtual environment whenever using Python for projects. This keeps your dependencies for each project separate and organaized. Instructions for setting up a virual enviornment for your platform can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
+I recommend working within a virtual environment whenever using Python for projects. This keeps your dependencies for each project separate and organaized. 
+Instructions for setting up a virual enviornment for your platform can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
 
 
 #### PIP Dependencies
@@ -45,6 +46,28 @@ createdb casting-agency
 psql casting-agency < casting-agency.pgsql
 ```
 
+## Roles of the project.
+For this project we have three roles and every one have diferent permissions.
+- Casting Assistant
+    - get:actors
+    - get:movies
+- Casting Director
+    - get:actors
+    - get:movies
+    - post:actor
+    - delete:actor
+    - patch:actor
+    - patch:movie
+- Executive Producer
+    - get:actors
+    - get:movies
+    - post:actor
+    - post:movie
+    - delete:actor
+    - delete:movie
+    - patch:actor
+    - patch:movie
+
 ## Runing the server
 
 From the source code directory first ensure you're working using your created virtual enviroment.
@@ -52,8 +75,11 @@ From the source code directory first ensure you're working using your created vi
 
 To run the server, execute:
 ```bash
+source setup.sh # You can modify the DATABAS_URL for the conection
 python manage.py runserver -r
 ```
+## Hosted in Heroku
+
 
 ## Testing
 To test the code you will need:
@@ -63,9 +89,24 @@ To test the code you will need:
     - Executive Producer
 - A database created for testing purposes.
 
-You will need to run in the terminal
+You will need to export the variables in the terminal
+
 ```BASH
-export 
+export TOKEN_CASTING_ASSISTANT=<Token Executive Assistant>
+export TOKEN_CASTING_DIRECTOR=<Token Casting director>
+export TOKEN_EXECUTIVE_DIRECTOR=<Token Executive Director>
+```
+
+Then you can run
+```BASH
+```
+
+or manual
+```BASH
+dropdb test-casting-agency # If you don't have a db you'll recieve an error.
+createdb test-casting-agency
+psql test-casting-agency < casting-agency.pgsql
+python test_app.py # You can modify the variables of the database here.
 ```
 ## API Documentation
 
