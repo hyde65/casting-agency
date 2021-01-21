@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 import json
 import datetime
 
-# Database url variable to connect to heroku database. 
+# Database url variable to connect to heroku database.
 # Default variable value: localhost database
 DATABASE_URL = os.getenv(
     'DATABASE_URL')
@@ -24,6 +24,7 @@ def setup_db(app, DATABASE_URL=DATABASE_URL):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
+
 
 # Assosiation table between Movie and Actor.
 # One actor can act in many movies.

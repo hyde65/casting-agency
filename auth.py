@@ -30,7 +30,7 @@ def get_token_auth_header():
         correct format: bearer <token>
     Raises:
         AuthError: If there's not the authorization header
-        AuthError: If doesn't start with "bearer" 
+        AuthError: If doesn't start with "bearer"
         AuthError: If there's not token
         AuthError: If the authorization header has more information.
     Returns:
@@ -178,7 +178,7 @@ def requires_auth(permission=''):
             token = get_token_auth_header()
             try:
                 payload = verify_decode_jwt(token)
-            except:
+            except AuthError:
                 abort(401)
             check_permissions(permission, payload)
 

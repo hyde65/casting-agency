@@ -16,9 +16,9 @@ from auth import AuthError, requires_auth
 
 
 def create_app(test_config=None):
-    AUTH0_DOMAIN = str(os.getenv('AUTH0_DOMAIN')) 
+    AUTH0_DOMAIN = str(os.getenv('AUTH0_DOMAIN'))
     API_AUDIENCE = str(os.getenv('API_AUDIENCE'))
-    CLIENT_ID = str(os.getenv('CLIENT_ID')) 
+    CLIENT_ID = str(os.getenv('CLIENT_ID'))
     REDIRECT_URI = str(os.getenv('REDIRECT_URI'))
 
     # Create and configure the app
@@ -34,7 +34,9 @@ def create_app(test_config=None):
     # Used to login and get the JWT token
     @app.route('/login')
     def login():
-        return redirect('https://'+AUTH0_DOMAIN+'/authorize?audience='+API_AUDIENCE+'&response_type=token&client_id='+CLIENT_ID+'&redirect_uri='+REDIRECT_URI)
+        return redirect('https://'+AUTH0_DOMAIN+'/authorize?audience='
+                        + API_AUDIENCE+'&response_type=token&client_id='
+                        + CLIENT_ID+'&redirect_uri='+REDIRECT_URI)
 
     @app.route('/actors')
     @requires_auth('get:actors')
@@ -93,7 +95,7 @@ def create_app(test_config=None):
                 'success': True,
                 'created': actor.id
             })
-        except:
+        except exc.FlushError:
             abort(422)  # Unprocesable entity
 
     @app.route('/movies', methods=['POST'])
@@ -125,7 +127,7 @@ def create_app(test_config=None):
                 'success': True,
                 'created': movie.id
             })
-        except:
+        except exc.FlushError:
             abort(422)
 
     @app.route('/movies/<int:id>', methods=['DELETE'])
@@ -199,7 +201,7 @@ def create_app(test_config=None):
                 'success': True,
                 'movie': movie.format()
             })
-        except:
+        except exc.FlushError:
             abort(422)
     # function to get movies with a list of ids
 
@@ -244,7 +246,7 @@ def create_app(test_config=None):
                 'success': True,
                 'actor': actor.format()
             })
-        except:
+        except exc.FlushError:
             abort(422)
 
     # Error handling.
