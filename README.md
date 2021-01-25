@@ -1,6 +1,6 @@
 # CASTING-AGENCY
 
-This backend was done to improve casting agencies, providing rest apis to store data of movies and actors, utilizing python and flask for backend and auth0 for authentification.
+This backend was done to improve casting agencies, providing rest apis to store data of movies and actors, utilizing python and flask for backend and auth0 for authentication.
 
 ## Getting Started
 
