@@ -8,7 +8,6 @@ const Header = () => {
 
     if (isLoading) {
         return (<div>Loading</div>);
-
     } else {
         var showInfo = isAuthenticated && (<React.Fragment>
             <div style={{ float: "right" }}>
@@ -32,10 +31,12 @@ const Header = () => {
             <header className={classes.Header}>
                 <ul>
                     <li>
-                        Casting Agencies
+                        <h2 style={{padding:0, margin:0}}>Casting Agencies</h2>
                     </li>
                     <li style={{ float: "right" }}>
-                        <BtnLoginLogout/>
+                        <div style={{display:'flex', alignItems:'center'}}>
+                            <BtnLoginLogout />
+                        </div>
                     </li>
                     {showInfo}
                 </ul>

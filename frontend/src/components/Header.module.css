@@ -11,8 +11,9 @@ li{
 
 .Header{
     background-color: black;
-    padding: 30px;
-    color: white;
+    padding: 20px 30px;
+    color:rgb(195, 195, 195);
+    text-align: center;
 }
 .ulInfo li{
     float: none;
