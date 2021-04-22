@@ -1,10 +1,10 @@
-ul{
+.Header ul{
     list-style: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
 }
-li{
+.Header ul li{
     float:left;
     padding: 0px 16px;
 }

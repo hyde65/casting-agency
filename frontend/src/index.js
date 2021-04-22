@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -7,15 +9,17 @@ import { Auth0Provider } from '@auth0/auth0-react'
 import authConfig from './config_auth.json';
 
 ReactDOM.render(
-  <Auth0Provider
-    domain={authConfig.domain}
-    clientId={authConfig.clientId}
-    redirectUri={window.location.origin}
-  >
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </Auth0Provider>,
+  <BrowserRouter>
+    <Auth0Provider
+      domain={authConfig.domain}
+      clientId={authConfig.clientId}
+      redirectUri={window.location.origin}
+    >
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </Auth0Provider>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 
